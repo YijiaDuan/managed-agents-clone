@@ -1,0 +1,191 @@
+import type { Session } from '../../types/session';
+
+export const mockSessions: Session[] = [
+  {
+    id: 'sesn_011Ca4n4jAe6yyjxqG3drfB2',
+    title: 'Session 1',
+    status: 'idle',
+    agentId: 'agt_01ABCdef1234567890',
+    agentName: 'Agent 1',
+    environmentId: 'env_01stVwREv',
+    environmentName: 'env-1',
+    vaultIds: [],
+    inputTokens: 5500,
+    outputTokens: 3600,
+    durationMs: 81000,
+    createdAt: '2026-04-15T10:35:00Z',
+    version: 'v2',
+    transcript: [
+      {
+        id: 'msg_01',
+        role: 'user',
+        content:
+          'Please draft a short scene description for a quiet morning at a small coffee shop. Keep it to two paragraphs.',
+        timestamp: '0:00:15',
+      },
+      {
+        id: 'msg_02',
+        role: 'agent',
+        content: `# Draft
+
+The bell above the door rang softly as the first customer of the day stepped in. Steam curled from the espresso machine, lit pale gold by the slanting morning sun. Behind the counter, the barista wiped a row of cups in slow, practiced motions, humming along to a low jazz tune that drifted from a speaker tucked beside the pastry case.
+
+A regular sat by the window with the day's paper unfolded across the table, a half-eaten croissant beside a cup that had only just stopped steaming. Outside, the street was almost empty: a cyclist gliding past, a dog walker pausing at the corner. Inside, everything moved at the speed of the slow drip of cold brew into a glass jar — quiet, deliberate, unhurried.`,
+        timestamp: '0:01:20',
+        durationMs: 65000,
+        inputTokens: 3,
+        outputTokens: 3552,
+        cacheReadTokens: 0,
+        cacheWriteTokens: 5532,
+      },
+    ],
+    events: [
+      { id: 'ev_1', type: 'session_running', label: 'Session running', timestamp: '0:00:15' },
+      { id: 'ev_2', type: 'user_message', label: 'Please draft a short scene description for a quiet morning at a small coffee shop. Keep it to two paragraphs.', timestamp: '0:00:15' },
+      { id: 'ev_3', type: 'model_request_start', label: 'Model request start', timestamp: '0:01:20' },
+      { id: 'ev_4', type: 'thinking', label: 'Thinking…', timestamp: '0:01:20' },
+      { id: 'ev_5', type: 'agent_message', label: '# Draft\n\nThe bell above the door rang softly as the first customer of the day…', timestamp: '0:01:20' },
+      { id: 'ev_6', type: 'model_request_end', label: '3 input · 3,552 output · 0 cache read · 5,532 cache write', timestamp: '0:01:21' },
+      { id: 'ev_7', type: 'session_idle', label: 'Session idle', timestamp: '0:01:21' },
+    ],
+  },
+  {
+    id: 'sesn_02TbN8QA',
+    title: 'Session 2',
+    status: 'idle',
+    agentId: 'agt_02XYZghi9876543210',
+    agentName: 'Agent 2',
+    environmentId: 'env_02bbF5sq9',
+    environmentName: 'env-2',
+    vaultIds: [],
+    inputTokens: 12200,
+    outputTokens: 4800,
+    durationMs: 142000,
+    createdAt: '2026-04-15T10:21:00Z',
+    version: 'v1',
+    transcript: [
+      { id: 'msg_01', role: 'user', content: 'Summarize the latest research on small language model distillation.', timestamp: '0:00:05' },
+      { id: 'msg_02', role: 'agent', content: 'Across recent papers, three trends stand out…', timestamp: '0:02:22', durationMs: 137000, inputTokens: 12200, outputTokens: 4800 },
+    ],
+    events: [
+      { id: 'ev_1', type: 'session_running', label: 'Session running', timestamp: '0:00:05' },
+      { id: 'ev_2', type: 'user_message', label: 'Summarize the latest research on small language model distillation.', timestamp: '0:00:05' },
+      { id: 'ev_3', type: 'tool_use', label: 'web_search("small language model distillation 2026")', timestamp: '0:00:08' },
+      { id: 'ev_4', type: 'tool_result', label: '12 results returned', timestamp: '0:00:21' },
+      { id: 'ev_5', type: 'thinking', label: 'Thinking…', timestamp: '0:01:00' },
+      { id: 'ev_6', type: 'agent_message', label: 'Across recent papers, three trends stand out…', timestamp: '0:02:22' },
+      { id: 'ev_7', type: 'session_idle', label: 'Session idle', timestamp: '0:02:25' },
+    ],
+  },
+  {
+    id: 'sesn_03EMUFG3',
+    title: 'Session 3',
+    status: 'idle',
+    agentId: 'agt_02XYZghi9876543210',
+    agentName: 'Agent 2',
+    environmentId: 'env_02bbF5sq9',
+    environmentName: 'env-2',
+    vaultIds: [],
+    inputTokens: 8120,
+    outputTokens: 2200,
+    durationMs: 72000,
+    createdAt: '2026-04-15T10:12:00Z',
+    version: 'v1',
+    transcript: [
+      { id: 'msg_01', role: 'user', content: 'Find the most cited paper on retrieval-augmented generation in 2025.', timestamp: '0:00:02' },
+      { id: 'msg_02', role: 'agent', content: 'The most cited 2025 paper on RAG appears to be…', timestamp: '0:01:12' },
+    ],
+    events: [
+      { id: 'ev_1', type: 'session_running', label: 'Session running', timestamp: '0:00:02' },
+      { id: 'ev_2', type: 'user_message', label: 'Find the most cited paper on retrieval-augmented generation in 2025.', timestamp: '0:00:02' },
+      { id: 'ev_3', type: 'thinking', label: 'Thinking…', timestamp: '0:00:30' },
+      { id: 'ev_4', type: 'agent_message', label: 'The most cited 2025 paper on RAG appears to be…', timestamp: '0:01:12' },
+      { id: 'ev_5', type: 'session_idle', label: 'Session idle', timestamp: '0:01:14' },
+    ],
+  },
+  {
+    id: 'sesn_04SwPrJf',
+    title: 'Session 4',
+    status: 'idle',
+    agentId: 'agt_03MNOpqr1122334455',
+    agentName: 'Agent 3',
+    environmentId: 'env_03Sjj87gM',
+    environmentName: 'env-3',
+    vaultIds: ['vlt_01EnpYTiG'],
+    inputTokens: 4400,
+    outputTokens: 980,
+    durationMs: 48000,
+    createdAt: '2026-04-10T11:24:00Z',
+    version: 'v2',
+    transcript: [
+      { id: 'msg_01', role: 'user', content: 'Run the weekly scan for "AI agents" topic.', timestamp: '0:00:01' },
+      { id: 'msg_02', role: 'agent', content: 'Weekly brief is ready. 6 notable posts since last run…', timestamp: '0:00:48' },
+    ],
+    events: [
+      { id: 'ev_1', type: 'session_running', label: 'Session running', timestamp: '0:00:01' },
+      { id: 'ev_2', type: 'user_message', label: 'Run the weekly scan for "AI agents" topic.', timestamp: '0:00:01' },
+      { id: 'ev_3', type: 'tool_use', label: 'fetch_blog_feeds()', timestamp: '0:00:04' },
+      { id: 'ev_4', type: 'tool_result', label: '38 posts fetched, 6 match topic', timestamp: '0:00:30' },
+      { id: 'ev_5', type: 'agent_message', label: 'Weekly brief is ready. 6 notable posts since last run…', timestamp: '0:00:48' },
+      { id: 'ev_6', type: 'session_idle', label: 'Session idle', timestamp: '0:00:49' },
+    ],
+  },
+  {
+    id: 'sesn_05qDpKau',
+    title: 'Session 5',
+    status: 'idle',
+    agentId: 'agt_04STUvwx5566778899',
+    agentName: 'Agent 4',
+    environmentId: 'env_04grqFxic',
+    environmentName: 'env-4',
+    vaultIds: [],
+    inputTokens: 1200,
+    outputTokens: 320,
+    durationMs: 18000,
+    createdAt: '2026-04-10T10:24:00Z',
+    version: 'v1',
+    transcript: [
+      { id: 'msg_01', role: 'user', content: 'How do I reset my account password?', timestamp: '0:00:01' },
+      { id: 'msg_02', role: 'agent', content: 'You can reset your password from the account settings page…', timestamp: '0:00:18' },
+    ],
+    events: [
+      { id: 'ev_1', type: 'session_running', label: 'Session running', timestamp: '0:00:01' },
+      { id: 'ev_2', type: 'user_message', label: 'How do I reset my account password?', timestamp: '0:00:01' },
+      { id: 'ev_3', type: 'agent_message', label: 'You can reset your password from the account settings page…', timestamp: '0:00:18' },
+      { id: 'ev_4', type: 'session_idle', label: 'Session idle', timestamp: '0:00:19' },
+    ],
+  },
+  {
+    id: 'sesn_06pyyjqB',
+    title: 'Session 6',
+    status: 'idle',
+    agentId: 'agt_03MNOpqr1122334455',
+    agentName: 'Agent 3',
+    environmentId: 'env_03Sjj87gM',
+    environmentName: 'env-3',
+    vaultIds: ['vlt_01EnpYTiG'],
+    inputTokens: 4200,
+    outputTokens: 880,
+    durationMs: 41000,
+    createdAt: '2026-04-10T10:10:00Z',
+    version: 'v2',
+    transcript: [
+      { id: 'msg_01', role: 'user', content: 'Run the weekly scan for "developer tools" topic.', timestamp: '0:00:01' },
+      { id: 'msg_02', role: 'agent', content: 'Weekly brief is ready. 4 notable posts…', timestamp: '0:00:41' },
+    ],
+    events: [
+      { id: 'ev_1', type: 'session_running', label: 'Session running', timestamp: '0:00:01' },
+      { id: 'ev_2', type: 'user_message', label: 'Run the weekly scan for "developer tools" topic.', timestamp: '0:00:01' },
+      { id: 'ev_3', type: 'agent_message', label: 'Weekly brief is ready. 4 notable posts…', timestamp: '0:00:41' },
+      { id: 'ev_4', type: 'session_idle', label: 'Session idle', timestamp: '0:00:42' },
+    ],
+  },
+];
+
+export function getSession(id: string): Session | undefined {
+  return mockSessions.find((s) => s.id === id);
+}
+
+export function getSessionsForAgent(agentId: string): Session[] {
+  return mockSessions.filter((s) => s.agentId === agentId);
+}
