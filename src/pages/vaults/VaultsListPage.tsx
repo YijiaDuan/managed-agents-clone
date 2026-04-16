@@ -27,7 +27,13 @@ export function VaultsListPage() {
     { key: 'name', header: 'Name', render: (v) => <span className="font-medium text-ink-900">{v.name}</span> },
     { key: 'status', header: 'Status', render: (v) => <StatusBadge status={v.status} />, width: '90px' },
     { key: 'created', header: 'Created', render: (v) => <span className="text-sm text-ink-700">{formatAbsoluteShort(v.createdAt)}</span>, width: '180px' },
-    { key: 'actions', header: '', render: () => <RowMenu />, width: '40px', align: 'right' },
+    {
+      key: 'actions',
+      header: '',
+      render: (v) => <RowMenu onCopyId={() => navigator.clipboard.writeText(v.id)} />,
+      width: '40px',
+      align: 'right',
+    },
   ];
 
   return (

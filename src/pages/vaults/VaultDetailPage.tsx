@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Archive, Plus, Trash } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { CopyableId } from '../../components/ui/CopyableId';
+import { toast } from '../../components/ui/Toast';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { DataTable, type Column } from '../../components/table/DataTable';
 import { Pagination } from '../../components/table/Pagination';
@@ -71,8 +72,8 @@ export function VaultDetailPage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="secondary" leftIcon={<Archive size={13} />}>Archive</Button>
-          <Button variant="danger" leftIcon={<Trash size={13} />}>Delete</Button>
+          <Button variant="secondary" leftIcon={<Archive size={13} />} onClick={() => toast('Archived (mock)')}>Archive</Button>
+          <Button variant="danger" leftIcon={<Trash size={13} />} onClick={() => toast('Deleted (mock)')}>Delete</Button>
         </div>
       </div>
 

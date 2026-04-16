@@ -6,6 +6,7 @@ import { Input } from '../ui/Input';
 import { mockMcpServers } from '../../data/mock/vaults';
 import type { McpServerOption } from '../../types/vault';
 import { cn } from '../../lib/cn';
+import { toast } from '../ui/Toast';
 
 interface Props {
   open: boolean;
@@ -35,7 +36,15 @@ export function AddCredentialModal({ open, onClose }: Props) {
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" onClick={onClose}>Connect</Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              toast(picked ? `Connected to ${picked.name} (mock)` : 'Credential created (mock)');
+              onClose();
+            }}
+          >
+            Connect
+          </Button>
         </>
       }
     >

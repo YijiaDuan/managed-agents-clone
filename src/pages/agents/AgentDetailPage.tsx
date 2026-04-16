@@ -5,6 +5,9 @@ import { Button } from '../../components/ui/Button';
 import { CopyableId } from '../../components/ui/CopyableId';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { UnderlineTabs } from '../../components/ui/UnderlineTabs';
+import { Dropdown } from '../../components/ui/Dropdown';
+import { Archive, Trash } from 'lucide-react';
+import { toast } from '../../components/ui/Toast';
 import { DataTable, type Column } from '../../components/table/DataTable';
 import { Pagination } from '../../components/table/Pagination';
 import { PageContainer } from '../../components/page/PageContainer';
@@ -15,11 +18,18 @@ import { formatRelativeTime } from '../../lib/format';
 import { formatAbsoluteShort } from '../../lib/format';
 import type { Session } from '../../types/session';
 
+function versionsUpTo(current: string): string[] {
+  const all = ['v1', 'v2', 'v3', 'v4', 'v5'];
+  const idx = all.indexOf(current);
+  return idx === -1 ? [current] : all.slice(0, idx + 1);
+}
+
 export function AgentDetailPage() {
   const { agentId } = useParams<{ agentId: string }>();
   const navigate = useNavigate();
   const agent = agentId ? getAgent(agentId) : undefined;
   const [tab, setTab] = useState<'agent' | 'sessions'>('agent');
+  const [showArchived, setShowArchived] = useState(true);
 
   if (!agent) {
     return (
@@ -61,14 +71,23 @@ export function AgentDetailPage() {
           <p className="mt-3 max-w-3xl text-sm text-ink-700">{agent.description}</p>
         </div>
         <div className="flex items-center gap-1.5">
-          <Button variant="secondary" leftIcon={<Pencil size={13} />}>Edit</Button>
-          <button
-            type="button"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-500 hover:bg-ink-100"
-            aria-label="More actions"
-          >
-            <MoreVertical size={16} />
-          </button>
+          <Button variant="secondary" leftIcon={<Pencil size={13} />} onClick={() => toast('Edit not implemented in this demo')}>Edit</Button>
+          <Dropdown
+            align="right"
+            trigger={
+              <button
+                type="button"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-500 hover:bg-ink-100"
+                aria-label="More actions"
+              >
+                <MoreVertical size={16} />
+              </button>
+            }
+            items={[
+              { label: 'Archive', icon: <Archive size={13} />, onClick: () => toast('Archived (mock)') },
+              { label: 'Delete', icon: <Trash size={13} />, onClick: () => toast('Deleted (mock)'), danger: true },
+            ]}
+          />
         </div>
       </div>
 
@@ -84,15 +103,26 @@ export function AgentDetailPage() {
 
       {tab === 'agent' ? (
         <div className="space-y-6">
-          <div className="rounded-md border border-ink-200 bg-white px-4 py-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-sm text-ink-700">
-                <span className="font-medium text-ink-700">Version:</span>
-                <span className="text-ink-900">{agent.version}</span>
-              </div>
-              <ChevronDown size={14} className="text-ink-400" />
-            </div>
-          </div>
+          <Dropdown
+            align="left"
+            fullWidth
+            trigger={
+              <button
+                type="button"
+                className="flex w-full items-center justify-between rounded-md border border-ink-200 bg-white px-4 py-3 text-left hover:bg-ink-50"
+              >
+                <div className="flex items-center gap-2 text-sm text-ink-700">
+                  <span className="font-medium text-ink-700">Version:</span>
+                  <span className="text-ink-900">{agent.version}</span>
+                </div>
+                <ChevronDown size={14} className="text-ink-400" />
+              </button>
+            }
+            items={versionsUpTo(agent.version).map((v) => ({
+              label: v + (v === agent.version ? '  · current' : ''),
+              onClick: () => toast(`Pinned to ${v} (mock)`),
+            }))}
+          />
 
           <div>
             <p className="mb-1 text-sm font-medium text-ink-900">Model</p>
@@ -104,6 +134,10 @@ export function AgentDetailPage() {
             <div className="relative rounded-md border border-ink-200 bg-white px-4 py-3.5">
               <button
                 type="button"
+                onClick={async () => {
+                  await navigator.clipboard.writeText(agent.systemPrompt);
+                  toast('System prompt copied');
+                }}
                 className="absolute right-3 top-3 rounded-md p-1 text-ink-400 hover:bg-ink-100 hover:text-ink-700"
                 aria-label="Copy"
               >
@@ -118,6 +152,7 @@ export function AgentDetailPage() {
             <div className="rounded-md border border-ink-200 bg-white">
               <button
                 type="button"
+                onClick={() => toast('Tool permissions panel (mock)')}
                 className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm hover:bg-ink-50"
               >
                 <div className="flex items-center gap-2">
@@ -147,7 +182,7 @@ export function AgentDetailPage() {
             <CreatedFilter />
             <VersionFilter />
             <div className="ml-auto">
-              <ShowArchivedToggle value />
+              <ShowArchivedToggle value={showArchived} onChange={setShowArchived} />
             </div>
           </div>
           <DataTable

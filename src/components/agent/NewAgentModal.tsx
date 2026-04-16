@@ -5,6 +5,7 @@ import { Button } from '../ui/Button';
 import { mockTemplates } from '../../data/mock/templates';
 import type { Template } from '../../types/template';
 import { cn } from '../../lib/cn';
+import { toast } from '../ui/Toast';
 
 interface Props {
   open: boolean;
@@ -181,6 +182,10 @@ export function NewAgentModal({ open, onClose }: Props) {
             </div>
             <button
               type="button"
+              onClick={async () => {
+                await navigator.clipboard.writeText(format === 'yaml' ? yamlConfig.map((l) => l.key + l.value).join('\n') : jsonConfig);
+                toast('Config copied to clipboard');
+              }}
               className="rounded-md p-1 text-ink-400 hover:bg-ink-100 hover:text-ink-700"
               aria-label="Copy"
             >
@@ -206,7 +211,15 @@ export function NewAgentModal({ open, onClose }: Props) {
 
       {/* Footer */}
       <div className="-mx-6 -mb-5 flex justify-end border-t border-ink-200 bg-white px-6 py-3">
-        <Button variant="primary" onClick={onClose}>Create agent</Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            toast('Agent created (mock)');
+            onClose();
+          }}
+        >
+          Create agent
+        </Button>
       </div>
     </Modal>
   );

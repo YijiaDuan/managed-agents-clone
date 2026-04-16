@@ -2,6 +2,7 @@ import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
+import { toast } from '../ui/Toast';
 
 interface Props {
   open: boolean;
@@ -18,7 +19,15 @@ export function NewEnvironmentModal({ open, onClose }: Props) {
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" onClick={onClose}>Create</Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              toast('Environment created (mock)');
+              onClose();
+            }}
+          >
+            Create
+          </Button>
         </>
       }
     >

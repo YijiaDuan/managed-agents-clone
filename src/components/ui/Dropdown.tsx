@@ -12,9 +12,10 @@ interface Props {
   trigger: ReactNode;
   items: DropdownItem[];
   align?: 'left' | 'right';
+  fullWidth?: boolean;
 }
 
-export function Dropdown({ trigger, items, align = 'right' }: Props) {
+export function Dropdown({ trigger, items, align = 'right', fullWidth = false }: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -28,7 +29,7 @@ export function Dropdown({ trigger, items, align = 'right' }: Props) {
   }, [open]);
 
   return (
-    <div ref={ref} className="relative inline-block">
+    <div ref={ref} className={cn('relative', fullWidth ? 'block w-full' : 'inline-block')}>
       <div onClick={() => setOpen((v) => !v)}>{trigger}</div>
       {open ? (
         <div

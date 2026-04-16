@@ -35,7 +35,13 @@ export function EnvironmentsListPage() {
       ),
       width: '120px',
     },
-    { key: 'actions', header: '', render: () => <RowMenu />, width: '40px', align: 'right' },
+    {
+      key: 'actions',
+      header: '',
+      render: (e) => <RowMenu onCopyId={() => navigator.clipboard.writeText(e.id)} />,
+      width: '40px',
+      align: 'right',
+    },
   ];
 
   return (

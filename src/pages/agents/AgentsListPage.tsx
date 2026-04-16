@@ -18,43 +18,28 @@ import { RowMenu } from '../../components/ui/RowMenu';
 export function AgentsListPage() {
   const navigate = useNavigate();
   const [showNew, setShowNew] = useState(false);
+  const [showArchived, setShowArchived] = useState(false);
+
+  const data = showArchived ? mockAgents : mockAgents.filter((a) => a.status !== 'archived');
 
   const columns: Column<Agent>[] = [
+    { key: 'id', header: 'ID', render: (a) => <CopyableId id={a.id} />, width: '160px' },
+    { key: 'name', header: 'Name', render: (a) => <span className="font-medium text-ink-900">{a.name}</span> },
+    { key: 'model', header: 'Model', render: (a) => <span className="font-mono text-xs text-ink-700">{a.model}</span> },
+    { key: 'status', header: 'Status', render: (a) => <StatusBadge status={a.status} />, width: '100px' },
+    { key: 'created', header: 'Created', render: (a) => <span className="text-xs text-ink-600">{formatRelativeTime(a.createdAt)}</span>, width: '140px' },
+    { key: 'updated', header: 'Last updated', render: (a) => <span className="text-xs text-ink-600">{formatRelativeTime(a.updatedAt)}</span>, width: '140px' },
     {
-      key: 'id',
-      header: 'ID',
-      render: (a) => <CopyableId id={a.id} />,
-      width: '160px',
+      key: 'actions',
+      header: '',
+      render: (a) => (
+        <RowMenu
+          onCopyId={() => navigator.clipboard.writeText(a.id)}
+        />
+      ),
+      width: '40px',
+      align: 'right',
     },
-    {
-      key: 'name',
-      header: 'Name',
-      render: (a) => <span className="font-medium text-ink-900">{a.name}</span>,
-    },
-    {
-      key: 'model',
-      header: 'Model',
-      render: (a) => <span className="font-mono text-xs text-ink-700">{a.model}</span>,
-    },
-    {
-      key: 'status',
-      header: 'Status',
-      render: (a) => <StatusBadge status={a.status} />,
-      width: '100px',
-    },
-    {
-      key: 'created',
-      header: 'Created',
-      render: (a) => <span className="text-xs text-ink-600">{formatRelativeTime(a.createdAt)}</span>,
-      width: '140px',
-    },
-    {
-      key: 'updated',
-      header: 'Last updated',
-      render: (a) => <span className="text-xs text-ink-600">{formatRelativeTime(a.updatedAt)}</span>,
-      width: '140px',
-    },
-    { key: 'actions', header: '', render: () => <RowMenu />, width: '40px', align: 'right' },
   ];
 
   return (
@@ -70,16 +55,16 @@ export function AgentsListPage() {
       />
 
       <div className="mb-3 flex items-center gap-2">
-        <GoToIdInput placeholder="Go to agent ID" />
+        <GoToIdInput placeholder="Go to agent ID" basePath="/agents" />
         <CreatedFilter />
         <div className="ml-auto">
-          <ShowArchivedToggle />
+          <ShowArchivedToggle value={showArchived} onChange={setShowArchived} />
         </div>
       </div>
 
       <DataTable
         columns={columns}
-        data={mockAgents}
+        data={data}
         rowKey={(a) => a.id}
         onRowClick={(a) => navigate(`/agents/${a.id}`)}
       />

@@ -19,6 +19,7 @@ import { Button } from '../../components/ui/Button';
 import { Dropdown } from '../../components/ui/Dropdown';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { UnderlineTabs } from '../../components/ui/UnderlineTabs';
+import { toast } from '../../components/ui/Toast';
 import { getSession } from '../../data/mock/sessions';
 import { formatDuration, formatRelativeTime, formatTokens } from '../../lib/format';
 import { TranscriptView } from '../../components/session/TranscriptView';
@@ -52,7 +53,12 @@ export function SessionDetailPage() {
             <Link to="/sessions" className="hover:text-ink-900">Sessions</Link>
             <span>/</span>
             <span className="font-mono text-xs">{shortId}</span>
-            <button className="ml-1 inline-flex flex-col items-center text-ink-400 hover:text-ink-700" aria-label="prev/next">
+            <button
+              type="button"
+              onClick={() => toast('Previous / next session (mock)')}
+              className="ml-1 inline-flex flex-col items-center text-ink-400 hover:text-ink-700"
+              aria-label="prev/next"
+            >
               <ChevronUp size={10} />
               <ChevronDown size={10} className="-mt-0.5" />
             </button>
@@ -66,12 +72,16 @@ export function SessionDetailPage() {
                 </Button>
               }
               items={[
-                { label: 'Send interrupt', icon: <Circle size={12} /> },
-                { label: 'Send event…', icon: <Keyboard size={12} /> },
-                { label: 'Archive session', icon: <X size={12} />, danger: true },
+                { label: 'Send interrupt', icon: <Circle size={12} />, onClick: () => toast('Interrupt sent (mock)') },
+                { label: 'Send event…', icon: <Keyboard size={12} />, onClick: () => toast('Event sent (mock)') },
+                { label: 'Archive session', icon: <X size={12} />, onClick: () => toast('Session archived (mock)'), danger: true },
               ]}
             />
-            <button className="inline-flex h-9 items-center gap-1.5 rounded-md bg-orange-100 px-3 text-sm font-medium text-orange-900 hover:bg-orange-200">
+            <button
+              type="button"
+              onClick={() => toast('Ask Claude not implemented in this demo')}
+              className="inline-flex h-9 items-center gap-1.5 rounded-md bg-orange-100 px-3 text-sm font-medium text-orange-900 hover:bg-orange-200"
+            >
               <Sparkles size={13} />
               Ask Claude
             </button>
@@ -126,14 +136,27 @@ export function SessionDetailPage() {
           className="border-b-0"
         />
         <div className="flex flex-1 items-center gap-2 pb-2">
+          <Dropdown
+            align="left"
+            trigger={
+              <button
+                type="button"
+                className="inline-flex h-7 items-center gap-1.5 rounded-md border border-ink-200 bg-white px-2.5 text-xs text-ink-700 hover:bg-ink-50"
+              >
+                All events <ChevronDown size={11} />
+              </button>
+            }
+            items={[
+              { label: 'All events' },
+              { label: 'User messages' },
+              { label: 'Agent messages' },
+              { label: 'Tool calls' },
+              { label: 'Errors only' },
+            ]}
+          />
           <button
             type="button"
-            className="inline-flex h-7 items-center gap-1.5 rounded-md border border-ink-200 bg-white px-2.5 text-xs text-ink-700 hover:bg-ink-50"
-          >
-            All events <ChevronDown size={11} />
-          </button>
-          <button
-            type="button"
+            onClick={() => toast('Search not implemented in this demo')}
             className="inline-flex h-7 w-7 items-center justify-center rounded-md text-ink-500 hover:bg-ink-100"
             aria-label="Search"
           >
@@ -141,12 +164,32 @@ export function SessionDetailPage() {
           </button>
 
           <div className="ml-auto flex items-center gap-1 text-ink-500">
-            <span className="inline-flex h-2 w-2 rounded-full bg-ink-300" />
-            <button className="rounded-md p-1 hover:bg-ink-100" aria-label="Keyboard"><Keyboard size={13} /></button>
-            <button className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs hover:bg-ink-100">
+            <span className="inline-flex h-2 w-2 rounded-full bg-ink-300" title="Live indicator" />
+            <button
+              type="button"
+              onClick={() => toast('Keyboard shortcuts (mock)')}
+              className="rounded-md p-1 hover:bg-ink-100"
+              aria-label="Keyboard"
+            >
+              <Keyboard size={13} />
+            </button>
+            <button
+              type="button"
+              onClick={async () => {
+                if (!session) return;
+                const text = session.transcript.map((m) => `[${m.role}] ${m.content}`).join('\n\n');
+                await navigator.clipboard.writeText(text);
+                toast('Transcript copied to clipboard');
+              }}
+              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs hover:bg-ink-100"
+            >
               <Copy size={12} /> Copy all
             </button>
-            <button className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs hover:bg-ink-100">
+            <button
+              type="button"
+              onClick={() => toast('Download started (mock)')}
+              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs hover:bg-ink-100"
+            >
               <Download size={12} /> Download
             </button>
           </div>

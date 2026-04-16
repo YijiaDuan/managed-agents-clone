@@ -3,6 +3,7 @@ import { Globe, Pencil } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { CopyableId } from '../../components/ui/CopyableId';
 import { getEnvironment } from '../../data/mock/environments';
+import { toast } from '../../components/ui/Toast';
 
 function SectionCard({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
   return (
@@ -54,7 +55,7 @@ export function EnvironmentDetailPage() {
           </div>
           <div className="mt-1.5 font-mono text-xs text-ink-500">{env.id}</div>
         </div>
-        <Button variant="secondary" leftIcon={<Pencil size={13} />}>Edit</Button>
+        <Button variant="secondary" leftIcon={<Pencil size={13} />} onClick={() => toast('Edit not implemented in this demo')}>Edit</Button>
       </div>
 
       <div className="space-y-5">
