@@ -1,5 +1,4 @@
 import { ArrowUp, Search } from 'lucide-react';
-import { PageContainer } from '../components/page/PageContainer';
 import { mockTemplates } from '../data/mock/templates';
 import { cn } from '../lib/cn';
 
@@ -12,35 +11,40 @@ const steps = [
 
 export function QuickstartPage() {
   return (
-    <PageContainer className="max-w-page">
-      {/* Top bar with steps */}
-      <div className="mb-12 flex items-center justify-center gap-2 text-sm">
-        <span className="text-ink-500">Quickstart</span>
-        <div className="ml-6 flex items-center gap-6">
+    <div className="flex h-full flex-col">
+      {/* Top stepper bar */}
+      <div className="flex items-center gap-6 border-b border-ink-200 px-8 py-3 text-sm">
+        <span className="font-medium text-ink-900">Quickstart</span>
+        <div className="flex items-center gap-3">
           {steps.map((s, i) => (
-            <div key={s.id} className="flex items-center gap-2 text-xs">
-              <span
-                className={cn(
-                  'inline-flex h-5 w-5 items-center justify-center rounded-full border text-[10px] font-medium',
-                  s.id === 1 ? 'border-ink-900 bg-white text-ink-900' : 'border-ink-300 text-ink-400',
-                )}
-              >
-                {s.id}
-              </span>
-              <span className={cn(s.id === 1 ? 'text-ink-900' : 'text-ink-500')}>{s.label}</span>
-              {i < steps.length - 1 ? <span className="text-ink-300">·</span> : null}
+            <div key={s.id} className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 text-xs">
+                <span
+                  className={cn(
+                    'inline-flex h-5 w-5 items-center justify-center rounded-full border text-[11px] font-medium',
+                    s.id === 1 ? 'border-ink-900 bg-white text-ink-900' : 'border-ink-300 text-ink-400',
+                  )}
+                >
+                  {s.id}
+                </span>
+                <span className={cn(s.id === 1 ? 'font-medium text-ink-900' : 'text-ink-500')}>
+                  {s.label}
+                </span>
+              </div>
+              {i < steps.length - 1 ? <span className="h-px w-6 bg-ink-300" /> : null}
             </div>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-8">
+      <div className="flex flex-1 overflow-hidden">
         {/* Center column: prompt hero */}
-        <div className="col-span-12 flex flex-col items-center justify-center pt-24 lg:col-span-5">
-          <h1 className="text-3xl font-semibold text-ink-900">What do you want to build?</h1>
-          <p className="mt-2 text-sm text-ink-500">Describe your agent or start with a template.</p>
-
-          <div className="mt-32 w-full max-w-md">
+        <div className="flex flex-1 flex-col items-center justify-between px-8 py-10">
+          <div className="flex flex-1 flex-col items-center justify-center text-center">
+            <h1 className="text-2xl font-semibold text-ink-900">What do you want to build?</h1>
+            <p className="mt-1.5 text-sm text-ink-500">Describe your agent or start with a template.</p>
+          </div>
+          <div className="w-full max-w-md pb-4">
             <div className="relative">
               <textarea
                 rows={1}
@@ -59,7 +63,7 @@ export function QuickstartPage() {
         </div>
 
         {/* Right column: templates */}
-        <div className="col-span-12 lg:col-span-7">
+        <div className="w-[640px] overflow-y-auto px-6 py-8">
           <div className="rounded-xl border border-ink-200 bg-white p-5 shadow-card">
             <h2 className="text-base font-semibold text-ink-900">Browse templates</h2>
             <div className="relative mt-3">
@@ -70,20 +74,20 @@ export function QuickstartPage() {
                 className="h-9 w-full rounded-md border border-ink-200 bg-white pl-9 pr-3 text-sm placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-ink-200"
               />
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="mt-3 grid grid-cols-2 gap-2">
               {mockTemplates.map((t) => (
                 <button
                   key={t.id}
                   type="button"
                   className={cn(
-                    'rounded-lg border bg-white p-4 text-left transition-colors hover:border-ink-400 hover:bg-ink-50',
+                    'rounded-lg border bg-white p-3 text-left transition-colors hover:border-ink-400',
                     t.highlighted ? 'border-ink-300 bg-ink-50' : 'border-ink-200',
                   )}
                 >
                   <p className="text-sm font-medium text-ink-900">{t.name}</p>
                   <p className="mt-1 line-clamp-2 text-xs text-ink-500">{t.description}</p>
                   {t.connectorIcons.length ? (
-                    <div className="mt-3 flex items-center gap-1">
+                    <div className="mt-2 flex items-center gap-0.5">
                       {t.connectorIcons.map((c, i) => (
                         <span
                           key={i}
@@ -101,6 +105,6 @@ export function QuickstartPage() {
           </div>
         </div>
       </div>
-    </PageContainer>
+    </div>
   );
 }

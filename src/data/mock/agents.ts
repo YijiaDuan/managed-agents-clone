@@ -2,13 +2,13 @@ import type { Agent } from '../../types/agent';
 
 export const mockAgents: Agent[] = [
   {
-    id: 'agt_01ABCdef1234567890',
+    id: 'agent_011CABCdefVWxyzMnoP567890',
     name: 'Agent 1',
-    description: 'A general-purpose agent that can research, write code, run commands, and use connected tools to complete the user\'s task end to end.',
-    model: 'claude-opus-4-6',
+    description: "A general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
+    model: 'claude-sonnet-4-6',
     status: 'active',
     version: 'v3',
-    systemPrompt: 'You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user\'s task end to end.',
+    systemPrompt: "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
     tools: [{ name: 'agent_toolset_20260401', category: 'built-in' }],
     mcps: [],
     skills: [],
@@ -16,7 +16,7 @@ export const mockAgents: Agent[] = [
     updatedAt: '2026-04-15T11:20:00Z',
   },
   {
-    id: 'agt_02XYZghi9876543210',
+    id: 'agent_021CXYZghiQRstuJklM543210',
     name: 'Agent 2',
     description: 'Conducts multi-step web research with source synthesis and citations.',
     model: 'claude-opus-4-6',
@@ -33,7 +33,7 @@ export const mockAgents: Agent[] = [
     updatedAt: '2026-04-10T09:30:00Z',
   },
   {
-    id: 'agt_03MNOpqr1122334455',
+    id: 'agent_031CMNOpqrJKLstuVWXyz334455',
     name: 'Agent 3',
     description: 'Scans software blogs for a topic and writes a weekly what-changed brief.',
     model: 'claude-sonnet-4-6',
@@ -49,7 +49,7 @@ export const mockAgents: Agent[] = [
     updatedAt: '2026-04-10T10:08:00Z',
   },
   {
-    id: 'agt_04STUvwx5566778899',
+    id: 'agent_041CSTUvwxYZabcDefG778899',
     name: 'Agent 4',
     description: 'Answers customer questions from your docs and knowledge base, and escalates when needed.',
     model: 'claude-sonnet-4-6',
@@ -65,7 +65,7 @@ export const mockAgents: Agent[] = [
     updatedAt: '2026-04-09T09:00:00Z',
   },
   {
-    id: 'agt_05YZAbcd1357924680',
+    id: 'agent_051CYZAbcdEFghijKLM924680',
     name: 'Agent 5',
     description: 'Pulls a closed sprint from Linear, synthesizes themes, and writes the retro doc before the meeting.',
     model: 'claude-opus-4-6',

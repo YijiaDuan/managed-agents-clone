@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ChevronDown, Copy, Pencil, Sparkles } from 'lucide-react';
+import { ChevronDown, Copy, MoreVertical, Pencil, Wrench } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
-import { Card } from '../../components/ui/Card';
 import { CopyableId } from '../../components/ui/CopyableId';
 import { StatusBadge } from '../../components/ui/StatusBadge';
-import { Tabs } from '../../components/ui/Tabs';
+import { UnderlineTabs } from '../../components/ui/UnderlineTabs';
 import { DataTable, type Column } from '../../components/table/DataTable';
 import { Pagination } from '../../components/table/Pagination';
 import { PageContainer } from '../../components/page/PageContainer';
@@ -34,7 +33,7 @@ export function AgentDetailPage() {
 
   const sessionColumns: Column<Session>[] = [
     { key: 'id', header: 'ID', render: (s) => <CopyableId id={s.id} /> },
-    { key: 'name', header: 'Name', render: (s) => <span className="text-ink-700">—</span> },
+    { key: 'name', header: 'Name', render: () => <span className="text-ink-700">—</span> },
     { key: 'status', header: 'Status', render: (s) => <StatusBadge status={s.status} /> },
     { key: 'version', header: 'Version', render: (s) => <span className="text-xs text-ink-700">{s.version}</span> },
     { key: 'created', header: 'Created', render: (s) => <span className="text-xs text-ink-600">{formatAbsoluteShort(s.createdAt)}</span> },
@@ -42,93 +41,105 @@ export function AgentDetailPage() {
 
   return (
     <PageContainer>
-      {/* Breadcrumbs */}
       <div className="mb-2 text-sm text-ink-500">
         <Link to="/agents" className="hover:text-ink-900">Agents</Link>
-        <span className="mx-1">/</span>
+        <span className="mx-1.5">/</span>
         <span className="text-ink-900">{agent.name}</span>
       </div>
 
-      {/* Header */}
-      <div className="mb-6 flex items-start justify-between gap-4">
+      <div className="mb-5 flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-semibold text-ink-900">{agent.name}</h1>
             <StatusBadge status={agent.status} />
           </div>
-          <div className="mt-1 flex items-center gap-2 text-xs text-ink-500">
+          <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-ink-500">
             <CopyableId id={agent.id} full />
             <span className="text-ink-300">·</span>
             <span>Last updated {formatRelativeTime(agent.updatedAt)}</span>
           </div>
           <p className="mt-3 max-w-3xl text-sm text-ink-700">{agent.description}</p>
         </div>
-        <Button variant="secondary" leftIcon={<Pencil size={14} />}>Edit</Button>
+        <div className="flex items-center gap-1.5">
+          <Button variant="secondary" leftIcon={<Pencil size={13} />}>Edit</Button>
+          <button
+            type="button"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-500 hover:bg-ink-100"
+            aria-label="More actions"
+          >
+            <MoreVertical size={16} />
+          </button>
+        </div>
       </div>
 
-      <div className="mb-4">
-        <Tabs
-          items={[
-            { id: 'agent', label: 'Agent' },
-            { id: 'sessions', label: 'Sessions' },
-          ]}
-          activeId={tab}
-          onChange={(id) => setTab(id as 'agent' | 'sessions')}
-        />
-      </div>
+      <UnderlineTabs
+        items={[
+          { id: 'agent', label: 'Agent' },
+          { id: 'sessions', label: 'Sessions' },
+        ]}
+        activeId={tab}
+        onChange={(id) => setTab(id as 'agent' | 'sessions')}
+        className="mb-6"
+      />
 
       {tab === 'agent' ? (
-        <div className="space-y-5">
-          <Card className="px-5 py-4">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-ink-500">Version: </span>
-              <button
-                type="button"
-                className="inline-flex items-center gap-1 rounded-md border border-ink-200 px-2 py-0.5 text-xs text-ink-800 hover:bg-ink-50"
-              >
-                {agent.version} <ChevronDown size={11} />
-              </button>
+        <div className="space-y-6">
+          <div className="rounded-md border border-ink-200 bg-white px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm text-ink-700">
+                <span className="font-medium text-ink-700">Version:</span>
+                <span className="text-ink-900">{agent.version}</span>
+              </div>
+              <ChevronDown size={14} className="text-ink-400" />
             </div>
-          </Card>
+          </div>
 
-          <Card className="px-5 py-4">
-            <p className="text-xs font-medium text-ink-500">Model</p>
-            <p className="mt-1 font-mono text-sm text-ink-900">{agent.model}</p>
-          </Card>
+          <div>
+            <p className="mb-1 text-sm font-medium text-ink-900">Model</p>
+            <p className="font-mono text-sm text-ink-700">{agent.model}</p>
+          </div>
 
-          <Card className="px-5 py-4">
-            <div className="mb-1 flex items-center justify-between">
-              <p className="text-xs font-medium text-ink-500">System prompt</p>
+          <div>
+            <p className="mb-1.5 text-sm font-medium text-ink-900">System prompt</p>
+            <div className="relative rounded-md border border-ink-200 bg-white px-4 py-3.5">
               <button
                 type="button"
-                className="rounded-md p-1 text-ink-400 hover:bg-ink-100 hover:text-ink-700"
+                className="absolute right-3 top-3 rounded-md p-1 text-ink-400 hover:bg-ink-100 hover:text-ink-700"
                 aria-label="Copy"
               >
-                <Copy size={14} />
+                <Copy size={13} />
+              </button>
+              <p className="whitespace-pre-wrap pr-6 text-sm leading-relaxed text-ink-800">{agent.systemPrompt}</p>
+            </div>
+          </div>
+
+          <div>
+            <p className="mb-1.5 text-sm font-medium text-ink-900">MCPs and tools</p>
+            <div className="rounded-md border border-ink-200 bg-white">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm hover:bg-ink-50"
+              >
+                <div className="flex items-center gap-2">
+                  <Wrench size={14} className="text-ink-500" />
+                  <span className="font-medium text-ink-900">Built-in tools</span>
+                  <span className="font-mono text-xs text-ink-500">
+                    {agent.tools[0]?.name ?? 'agent_toolset_20260401'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-ink-500">
+                  <span>Tool permissions <span className="ml-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-ink-100 text-[10px]">{agent.tools.length}</span></span>
+                  <span>Always allow</span>
+                  <ChevronDown size={12} />
+                </div>
               </button>
             </div>
-            <p className="text-sm leading-relaxed text-ink-800">{agent.systemPrompt}</p>
-          </Card>
+          </div>
 
-          <Card className="px-5 py-4">
-            <p className="text-xs font-medium text-ink-500">MCPs and tools</p>
-            <div className="mt-3 rounded-md border border-ink-200 bg-ink-50 px-3 py-2.5">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-sm text-ink-800">
-                  <Sparkles size={14} className="text-ink-500" />
-                  <span className="font-medium">Built-in tools</span>
-                  <span className="ml-1 font-mono text-xs text-ink-500">{agent.tools[0]?.name ?? 'agent_toolset_20260401'}</span>
-                </div>
-                <span className="text-xs text-ink-500">Always allow</span>
-              </div>
-              <div className="mt-2 text-xs text-ink-500">Tool permissions: {agent.tools.length}</div>
-            </div>
-          </Card>
-
-          <Card className="px-5 py-4">
-            <p className="text-xs font-medium text-ink-500">Skills</p>
-            <p className="mt-2 text-sm text-ink-500">No skills configured.</p>
-          </Card>
+          <div>
+            <p className="mb-1.5 text-sm font-medium text-ink-900">Skills</p>
+            <p className="text-sm text-ink-500">No skills configured.</p>
+          </div>
         </div>
       ) : (
         <>

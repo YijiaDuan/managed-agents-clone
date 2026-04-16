@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus, Share2 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { CopyableId } from '../../components/ui/CopyableId';
 import { StatusBadge } from '../../components/ui/StatusBadge';
@@ -12,23 +12,29 @@ import { AgentFilter, CreatedFilter, GoToIdInput, ShowArchivedToggle } from '../
 import { mockSessions } from '../../data/mock/sessions';
 import { formatAbsoluteShort } from '../../lib/format';
 import type { Session } from '../../types/session';
-import { Boxes } from 'lucide-react';
 import { NewSessionModal } from '../../components/session/NewSessionModal';
+import { RowMenu } from '../../components/ui/RowMenu';
 
 export function SessionsListPage() {
   const navigate = useNavigate();
   const [showNew, setShowNew] = useState(false);
 
   const columns: Column<Session>[] = [
+    {
+      key: 'check',
+      header: <input type="checkbox" className="h-3.5 w-3.5 rounded border-ink-300" />,
+      render: () => <input type="checkbox" className="h-3.5 w-3.5 rounded border-ink-300" onClick={(e) => e.stopPropagation()} />,
+      width: '36px',
+    },
     { key: 'id', header: 'ID', render: (s) => <CopyableId id={s.id} />, width: '160px' },
-    { key: 'name', header: 'Name', render: (s) => <span className="text-ink-700">—</span> },
-    { key: 'status', header: 'Status', render: (s) => <StatusBadge status={s.status} />, width: '90px' },
+    { key: 'name', header: 'Name', render: (s) => <span className="text-ink-700">{s.title || '—'}</span> },
+    { key: 'status', header: 'Status', render: (s) => <StatusBadge status={s.status} />, width: '80px' },
     {
       key: 'agent',
       header: 'Agent',
       render: (s) => (
         <span className="inline-flex items-center gap-1.5 text-sm text-ink-800">
-          <Boxes size={12} className="text-ink-500" />
+          <Share2 size={12} className="text-ink-500" />
           {s.agentName}
         </span>
       ),
@@ -36,9 +42,10 @@ export function SessionsListPage() {
     {
       key: 'created',
       header: 'Created',
-      render: (s) => <span className="text-xs text-ink-600">{formatAbsoluteShort(s.createdAt)}</span>,
+      render: (s) => <span className="text-sm text-ink-700">{formatAbsoluteShort(s.createdAt)}</span>,
       width: '180px',
     },
+    { key: 'actions', header: '', render: () => <RowMenu />, width: '40px', align: 'right' },
   ];
 
   return (

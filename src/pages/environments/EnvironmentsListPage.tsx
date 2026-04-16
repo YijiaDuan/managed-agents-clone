@@ -11,7 +11,8 @@ import { PageHeader } from '../../components/page/PageHeader';
 import { mockEnvironments } from '../../data/mock/environments';
 import type { Environment } from '../../types/environment';
 import { NewEnvironmentModal } from '../../components/environment/NewEnvironmentModal';
-import { Tabs } from '../../components/ui/Tabs';
+import { RowMenu } from '../../components/ui/RowMenu';
+import { cn } from '../../lib/cn';
 
 export function EnvironmentsListPage() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ export function EnvironmentsListPage() {
       ),
       width: '120px',
     },
+    { key: 'actions', header: '', render: () => <RowMenu />, width: '40px', align: 'right' },
   ];
 
   return (
@@ -48,15 +50,20 @@ export function EnvironmentsListPage() {
         }
       />
 
-      <div className="mb-3">
-        <Tabs
-          items={[
-            { id: 'all', label: 'All' },
-            { id: 'active', label: 'Active' },
-          ]}
-          activeId={filter}
-          onChange={(id) => setFilter(id as 'all' | 'active')}
-        />
+      <div className="mb-3 inline-flex items-center gap-1">
+        {(['all', 'active'] as const).map((id) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setFilter(id)}
+            className={cn(
+              'rounded-md px-3 py-1 text-sm font-medium transition-colors',
+              filter === id ? 'bg-white text-ink-900 shadow-card border border-ink-200' : 'text-ink-500 hover:text-ink-800',
+            )}
+          >
+            {id === 'all' ? 'All' : 'Active'}
+          </button>
+        ))}
       </div>
 
       <DataTable

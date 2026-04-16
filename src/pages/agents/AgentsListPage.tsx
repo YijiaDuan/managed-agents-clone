@@ -13,6 +13,7 @@ import { mockAgents } from '../../data/mock/agents';
 import { formatRelativeTime } from '../../lib/format';
 import type { Agent } from '../../types/agent';
 import { NewAgentModal } from '../../components/agent/NewAgentModal';
+import { RowMenu } from '../../components/ui/RowMenu';
 
 export function AgentsListPage() {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ export function AgentsListPage() {
       render: (a) => <span className="text-xs text-ink-600">{formatRelativeTime(a.updatedAt)}</span>,
       width: '140px',
     },
+    { key: 'actions', header: '', render: () => <RowMenu />, width: '40px', align: 'right' },
   ];
 
   return (

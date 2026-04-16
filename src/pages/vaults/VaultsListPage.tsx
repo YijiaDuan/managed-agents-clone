@@ -8,11 +8,12 @@ import { DataTable, type Column } from '../../components/table/DataTable';
 import { Pagination } from '../../components/table/Pagination';
 import { PageContainer } from '../../components/page/PageContainer';
 import { PageHeader } from '../../components/page/PageHeader';
-import { Tabs } from '../../components/ui/Tabs';
 import { mockVaults } from '../../data/mock/vaults';
 import { formatAbsoluteShort } from '../../lib/format';
 import type { Vault } from '../../types/vault';
 import { NewVaultModal } from '../../components/credential/NewVaultModal';
+import { RowMenu } from '../../components/ui/RowMenu';
+import { cn } from '../../lib/cn';
 
 export function VaultsListPage() {
   const navigate = useNavigate();
@@ -25,7 +26,8 @@ export function VaultsListPage() {
     { key: 'id', header: 'ID', render: (v) => <CopyableId id={v.id} />, width: '160px' },
     { key: 'name', header: 'Name', render: (v) => <span className="font-medium text-ink-900">{v.name}</span> },
     { key: 'status', header: 'Status', render: (v) => <StatusBadge status={v.status} />, width: '90px' },
-    { key: 'created', header: 'Created', render: (v) => <span className="text-xs text-ink-600">{formatAbsoluteShort(v.createdAt)}</span>, width: '180px' },
+    { key: 'created', header: 'Created', render: (v) => <span className="text-sm text-ink-700">{formatAbsoluteShort(v.createdAt)}</span>, width: '180px' },
+    { key: 'actions', header: '', render: () => <RowMenu />, width: '40px', align: 'right' },
   ];
 
   return (
@@ -40,15 +42,20 @@ export function VaultsListPage() {
         }
       />
 
-      <div className="mb-3">
-        <Tabs
-          items={[
-            { id: 'all', label: 'All' },
-            { id: 'active', label: 'Active' },
-          ]}
-          activeId={filter}
-          onChange={(id) => setFilter(id as 'all' | 'active')}
-        />
+      <div className="mb-3 inline-flex items-center gap-1">
+        {(['all', 'active'] as const).map((id) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setFilter(id)}
+            className={cn(
+              'rounded-md px-3 py-1 text-sm font-medium transition-colors',
+              filter === id ? 'bg-white text-ink-900 shadow-card border border-ink-200' : 'text-ink-500 hover:text-ink-800',
+            )}
+          >
+            {id === 'all' ? 'All' : 'Active'}
+          </button>
+        ))}
       </div>
 
       <DataTable

@@ -11,6 +11,7 @@ interface Props {
   footer?: ReactNode;
   size?: 'sm' | 'md' | 'lg';
   contentClassName?: string;
+  showClose?: boolean;
 }
 
 const sizeClasses = {
@@ -19,7 +20,7 @@ const sizeClasses = {
   lg: 'max-w-2xl',
 };
 
-export function Modal({ open, onClose, title, children, footer, size = 'md', contentClassName }: Props) {
+export function Modal({ open, onClose, title, children, footer, size = 'md', contentClassName, showClose = true }: Props) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -50,15 +51,26 @@ export function Modal({ open, onClose, title, children, footer, size = 'md', con
         {title ? (
           <div className="flex items-center justify-between px-6 py-4 border-b border-ink-200">
             <h2 className="text-base font-semibold text-ink-900">{title}</h2>
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-md p-1 text-ink-500 hover:bg-ink-100 hover:text-ink-900"
-              aria-label="Close"
-            >
-              <X size={16} />
-            </button>
+            {showClose ? (
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-md p-1 text-ink-500 hover:bg-ink-100 hover:text-ink-900"
+                aria-label="Close"
+              >
+                <X size={16} />
+              </button>
+            ) : null}
           </div>
+        ) : showClose ? (
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-4 top-4 z-10 rounded-md p-1 text-ink-500 hover:bg-ink-100 hover:text-ink-900"
+            aria-label="Close"
+          >
+            <X size={16} />
+          </button>
         ) : null}
         <div className="px-6 py-5">{children}</div>
         {footer ? (

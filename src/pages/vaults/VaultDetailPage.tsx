@@ -6,12 +6,12 @@ import { CopyableId } from '../../components/ui/CopyableId';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { DataTable, type Column } from '../../components/table/DataTable';
 import { Pagination } from '../../components/table/Pagination';
-import { PageContainer } from '../../components/page/PageContainer';
-import { Tabs } from '../../components/ui/Tabs';
 import { getVault } from '../../data/mock/vaults';
-import { formatAbsoluteShort, formatRelativeTime } from '../../lib/format';
+import { formatRelativeTime } from '../../lib/format';
 import type { Credential } from '../../types/vault';
 import { AddCredentialModal } from '../../components/credential/AddCredentialModal';
+import { RowMenu } from '../../components/ui/RowMenu';
+import { cn } from '../../lib/cn';
 
 export function VaultDetailPage() {
   const { vaultId } = useParams<{ vaultId: string }>();
@@ -21,9 +21,9 @@ export function VaultDetailPage() {
 
   if (!vault) {
     return (
-      <PageContainer>
+      <div className="mx-auto max-w-4xl px-8 py-8">
         <p className="text-sm text-ink-500">Vault not found.</p>
-      </PageContainer>
+      </div>
     );
   }
 
@@ -31,15 +31,11 @@ export function VaultDetailPage() {
 
   const columns: Column<Credential>[] = [
     { key: 'id', header: 'ID', render: (c) => <CopyableId id={c.id} />, width: '140px' },
-    { key: 'name', header: 'Name', render: (c) => <span className="font-medium text-ink-900">{c.name}</span> },
+    { key: 'name', header: 'Name', render: (c) => <span className="text-ink-900">{c.name}</span> },
     {
       key: 'type',
       header: 'Type',
-      render: (c) => (
-        <span className="inline-flex items-center rounded-md border border-ink-200 px-1.5 py-0.5 text-xs text-ink-700">
-          {c.type}
-        </span>
-      ),
+      render: (c) => <span className="text-ink-700">{c.type}</span>,
       width: '120px',
     },
     {
@@ -48,14 +44,15 @@ export function VaultDetailPage() {
       render: (c) => <span className="font-mono text-xs text-ink-700">{c.mcpServerUrl}</span>,
     },
     { key: 'status', header: 'Status', render: (c) => <StatusBadge status={c.status} />, width: '90px' },
-    { key: 'updated', header: 'Updated', render: (c) => <span className="text-xs text-ink-600">{formatRelativeTime(c.updatedAt)}</span>, width: '140px' },
+    { key: 'updated', header: 'Updated', render: (c) => <span className="text-sm text-ink-700">{formatRelativeTime(c.updatedAt)}</span>, width: '120px' },
+    { key: 'actions', header: '', render: () => <RowMenu />, width: '40px', align: 'right' },
   ];
 
   return (
-    <PageContainer>
-      <div className="mb-2 text-sm text-ink-500">
+    <div className="mx-auto max-w-4xl px-8 pt-6 pb-12">
+      <div className="mb-6 text-sm text-ink-500">
         <Link to="/vaults" className="hover:text-ink-900">Credential vaults</Link>
-        <span className="mx-1">/</span>
+        <span className="mx-1.5">/</span>
         <span className="text-ink-900">{vault.name}</span>
       </div>
 
@@ -65,17 +62,17 @@ export function VaultDetailPage() {
             <h1 className="text-2xl font-semibold text-ink-900">{vault.name}</h1>
             <StatusBadge status={vault.status} />
           </div>
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-ink-500">
+          <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-ink-500">
             <CopyableId id={vault.id} full />
             <span className="text-ink-300">·</span>
-            <span>Created: {formatAbsoluteShort(vault.createdAt)}</span>
+            <span>Created: {formatRelativeTime(vault.createdAt)}</span>
             <span className="text-ink-300">·</span>
-            <span>Updated: {formatAbsoluteShort(vault.updatedAt)}</span>
+            <span>Updated: {formatRelativeTime(vault.updatedAt)}</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="secondary" leftIcon={<Archive size={14} />}>Archive</Button>
-          <Button variant="danger" leftIcon={<Trash size={14} />}>Delete</Button>
+          <Button variant="secondary" leftIcon={<Archive size={13} />}>Archive</Button>
+          <Button variant="danger" leftIcon={<Trash size={13} />}>Delete</Button>
         </div>
       </div>
 
@@ -86,15 +83,20 @@ export function VaultDetailPage() {
         </Button>
       </div>
 
-      <div className="mb-3">
-        <Tabs
-          items={[
-            { id: 'all', label: 'All' },
-            { id: 'active', label: 'Active' },
-          ]}
-          activeId={filter}
-          onChange={(id) => setFilter(id as 'all' | 'active')}
-        />
+      <div className="mb-3 inline-flex items-center gap-1">
+        {(['all', 'active'] as const).map((id) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setFilter(id)}
+            className={cn(
+              'rounded-md px-3 py-1 text-sm font-medium transition-colors',
+              filter === id ? 'bg-white text-ink-900 shadow-card border border-ink-200' : 'text-ink-500 hover:text-ink-800',
+            )}
+          >
+            {id === 'all' ? 'All' : 'Active'}
+          </button>
+        ))}
       </div>
 
       <DataTable
@@ -105,6 +107,6 @@ export function VaultDetailPage() {
       <Pagination />
 
       <AddCredentialModal open={showAdd} onClose={() => setShowAdd(false)} />
-    </PageContainer>
+    </div>
   );
 }

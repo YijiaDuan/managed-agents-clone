@@ -38,7 +38,6 @@ export default function App() {
         <Route path="/analytics/usage" element={<PlaceholderPage title="Usage" />} />
         <Route path="/analytics/cost" element={<PlaceholderPage title="Cost" />} />
         <Route path="/analytics/logs" element={<PlaceholderPage title="Logs" />} />
-        <Route path="/analytics/batches" element={<PlaceholderPage title="Batches" />} />
         <Route path="/docs" element={<PlaceholderPage title="Documentation" />} />
 
         <Route path="*" element={<NotFoundPage />} />

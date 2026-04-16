@@ -46,7 +46,7 @@ export function DataTable<T>({ columns, data, rowKey, onRowClick, emptyState, cl
               key={rowKey(row)}
               onClick={() => onRowClick?.(row)}
               className={cn(
-                'border-b border-ink-100 last:border-b-0',
+                'group border-b border-ink-100 last:border-b-0',
                 onRowClick && 'cursor-pointer hover:bg-ink-50',
               )}
             >
